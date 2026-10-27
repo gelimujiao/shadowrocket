@@ -1,14 +1,17 @@
 *.iml
 .gradle
-/local.properties
-/.idea
+local.properties
+.idea/
 .DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+build/
+*/build/
+**/build/
+captures/
+.externalNativeBuild/
+.cxx/
 *.apk
 *.aab
 
-# Keep the original tipa for reference
-# Shadowrocket_2.2.92.tipa
+# iOS packages
+*.tipa
+*.ipa
