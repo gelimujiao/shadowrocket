@@ -1,11 +1,16 @@
-name: Build Shadowrocket Android APK
+name: Build and Release Shadowrocket Android APK
 
 on:
   push:
     branches: [ master, main ]
+    tags:
+      - 'v*'
   pull_request:
     branches: [ master, main ]
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -28,8 +33,35 @@ jobs:
     - name: Build Debug APK
       run: ./gradlew assembleDebug --stacktrace
 
-    - name: Upload APK Artifact
+    - name: Prepare APK Asset
+      run: |
+        cp app/build/outputs/apk/debug/app-debug.apk Shadowrocket-2.2.92-android.apk
+
+    - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
         name: shadowrocket-debug-apk
-        path: app/build/outputs/apk/debug/app-debug.apk
+        path: Shadowrocket-2.2.92-android.apk
+
+    - name: Create Release on Tag
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v2
+      with:
+        name: Shadowrocket for Android ${{ github.ref_name }}
+        tag_name: ${{ github.ref_name }}
+        files: Shadowrocket-2.2.92-android.apk
+        draft: false
+        prerelease: false
+        body: |
+          # Shadowrocket for Android (${{ github.ref_name }})
+          
+          基于 iOS 版 Shadowrocket 2.2.92 架构与协议重构的 Android 客户端成品。
+          
+          ### 📱 下载与安装
+          点击下方 Assets 中的 **`Shadowrocket-2.2.92-android.apk`** 下载，直接安装至 Android 手机、平板或智能电视。
+          
+          ### 🌟 核心特性
+          - 🚀 **全协议原生支持**：Shadowsocks (2022/AEAD), VMess, VLESS (Reality), Trojan, Hysteria 1/2, TUIC v5, WireGuard, Snell
+          - 📜 **100% 兼容 Shadowrocket 规则配置**：内置官方 616 条规则与 MaxMind 离线 GeoIP 数据库
+          - 📺 **三端原生自适应**：手机单列、平板双栏 NavigationRail、Android 电视 D-Pad 遥控器大卡片导航
+          - 📦 **Android 专属增强**：分应用代理（Per-App Proxy）、快捷设置磁贴（TileService）
