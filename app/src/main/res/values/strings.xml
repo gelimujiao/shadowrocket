@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Shadowrocket</string>
+    <string name="vpn_service_desc">Shadowrocket 高性能规则代理网络引擎</string>
+    <string name="connect">连接</string>
+    <string name="disconnect">断开</string>
+    <string name="connecting">正在连接...</string>
+    <string name="connected">已连接</string>
+    <string name="disconnected">未连接</string>
+    <string name="routing_mode">全局路由</string>
+    <string name="servers">节点列表</string>
+    <string name="config">配置</string>
+    <string name="per_app_proxy">分应用代理</string>
+    <string name="settings">设置</string>
+    <string name="test_all_ping">一键测速</string>
+</resources>
